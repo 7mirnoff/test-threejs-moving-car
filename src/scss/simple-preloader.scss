@@ -1,0 +1,21 @@
+#webgl_container {
+  background-color: #0D0D16;
+  width: 100%;
+  height: 100vh;
+}
+
+#simple_preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 5px;
+  width: 100%;
+  background-color: #1a1d20;
+}
+
+#simple_progress_bar {
+  height: 5px;
+  background-color: white;
+  width: 0%;
+  transition: 0.1s;
+}
