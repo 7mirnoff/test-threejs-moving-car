@@ -45,4 +45,29 @@ const sceneInit = () => {
 
   const light = new THREE.HemisphereLight(0xCCCCCC, 0x666666, 1)
   g.v.scene.add(light)
+
+  const car = g.v.scene.children[1]
+  let angle = 0
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'ArrowUp') {
+      car.position.x += Math.sin(angle)
+      car.position.z += Math.cos(angle)
+    }
+
+    if (evt.key === 'ArrowDown') {
+      car.position.x -= Math.sin(angle)
+      car.position.z -= Math.cos(angle)
+    }
+
+    if (evt.key === 'ArrowLeft') {
+      car.rotation.y += 0.1
+      angle += 0.1
+    }
+
+    if (evt.key === 'ArrowRight') {
+      car.rotation.y -= 0.1
+      angle -= 0.1
+    }
+  })
 }

@@ -22,6 +22,7 @@ const Viewer = class {
     this.camera.position.z = 5
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+    this.controls.enableKeys = false
     window.addEventListener('resize', function () {
       that.onResize()
     })
