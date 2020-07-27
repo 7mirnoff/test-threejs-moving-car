@@ -48,33 +48,38 @@ const sceneInit = () => {
 
   const carWrap = g.v.scene.children[2]
   const car = carWrap.children[0]
-  let angle = 0
 
   const direct = new THREE.Vector3(0, 0, 0)
+  let angle = 45 * Math.PI / 2
+  let speed = 0
+
+  const moveCar = () => {
+    direct.x = Math.sin(angle)
+    direct.z = Math.cos(angle)
+    direct.normalize()
+    direct.multiplyScalar(speed)
+    carWrap.position.add(direct)
+    car.rotation.y = angle
+  }
 
   g.l.addLoop('moveCar', () => {
-    carWrap.position.add(direct)
+    moveCar()
   })
 
   document.addEventListener('keydown', (evt) => {
     if (evt.key === 'ArrowUp') {
-      // direct.x += 0.1
+      speed += 0.1
     }
 
     if (evt.key === 'ArrowDown') {
-      // direct.x -= 0.1
+      speed -= 0.1
     }
 
     if (evt.key === 'ArrowLeft') {
-      // car.rotation.y += 0.1
       angle += 0.1
-
-      direct.x += Math.sin(angle) * 0.1
-      direct.z += Math.cos(angle) * 0.1
     }
 
     if (evt.key === 'ArrowRight') {
-      // car.rotation.y -= 0.1
       angle -= 0.1
     }
   })
