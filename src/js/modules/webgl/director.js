@@ -46,7 +46,7 @@ const sceneInit = () => {
   const light = new THREE.HemisphereLight(0xCCCCCC, 0x666666, 1)
   g.v.scene.add(light)
 
-  const carWrap = g.v.scene.children[2]
+  const carWrap = g.v.scene.children[1]
   const car = carWrap.children[0]
 
   const direct = new THREE.Vector3(0, 0, 0)
@@ -56,7 +56,7 @@ const sceneInit = () => {
   let speedTarget = 0
 
   const moveCar = () => {
-    speed = g.l.lerp(speed, speedTarget, 0.04)
+    speed = g.l.lerp(speed, speedTarget, 0.02)
     angle = g.l.lerp(angle, angleTarget, 0.04)
 
     direct.x = Math.sin(angle)
@@ -65,8 +65,6 @@ const sceneInit = () => {
     direct.multiplyScalar(speed)
     carWrap.position.add(direct)
     car.rotation.y = angle
-
-    console.log(speed);
   }
 
   g.l.addLoop('moveCar', () => {
