@@ -1,6 +1,7 @@
 import GUM from './gum/gum'
 import SRCS from './srcs'
 import * as THREE from 'three'
+import * as CANNON from 'cannon'
 
 window.onload = function () {
   Director.init()
@@ -39,6 +40,13 @@ const sceneInit = () => {
 
   const gridHelper = new THREE.GridHelper(100, 100, 0x0000ff, 0x808080)
   g.v.scene.add(gridHelper)
+
+
+  const planeG = new THREE.PlaneGeometry(5, 20, 32)
+  const planeM = new THREE.MeshStandardMaterial({ color: 0xffff00, side: THREE.DoubleSide })
+  const meshPlane = new THREE.Mesh(planeG, planeM)
+  g.v.scene.add(meshPlane)
+
 
   g.v.camera.position.set(20, 20, 20)
   g.v.controls.update()
@@ -97,5 +105,43 @@ const sceneInit = () => {
     if (pressed.has('ArrowRight')) {
       angleTarget -= 0.03 * speed / 0.2
     }
+  })
+
+  const world = new CANNON.World()
+  world.gravity.set(0, 0, -9)
+  world.broadphase = new CANNON.NaiveBroadphase()
+  // world.solver.iterations = 10;
+
+  // ground plane
+  const groundMaterial = new CANNON.Material();
+  const groundShape = new CANNON.Plane();
+  const groundBody = new CANNON.Body({
+      mass: 0,
+      material: groundMaterial
+  });
+  groundBody.addShape(groundShape);
+  world.add(groundBody);
+
+
+  const shape = new CANNON.Box(new CANNON.Vec3(1,1,1));
+  const body = new CANNON.Body({
+    mass: 1
+  });
+  body.addShape(shape);
+  body.angularVelocity.set(0,10,0);
+  body.angularDamping = 0.5;
+  world.addBody(body);
+
+
+
+  const timeStep = 1 / 60
+
+  g.l.addLoop('phis', () => {
+     // Step the physics world
+     world.step(timeStep);
+
+     // Copy coordinates from Cannon.js to Three.js
+     car.position.copy(body.position);
+     car.quaternion.copy(body.quaternion);
   })
 }
